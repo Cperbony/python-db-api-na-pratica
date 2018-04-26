@@ -30,7 +30,7 @@ class Agency:
             self.__setattr__(k, v)
 
 
-class Agency:
+class User:
     id: int
     name: str
     email: str

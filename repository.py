@@ -1,6 +1,7 @@
 # design pattern - repository
-from models import BankAccount, Agency
+from models import BankAccount, Agency, User
 from db import DB
+from typing import Dict
 
 
 class BankAccountDB:
@@ -27,7 +28,35 @@ class BankAccountDB:
             return False
 
         row = cursor.fetchone()
-        print(row)
+        row_cloned = row.copy()
+
+        bank_account = BankAccount()
+        for k, v in BankAccount.__dict__['__annotations__'].items():
+            if k in row_cloned:
+                setattr(bank_account, k, row_cloned[k])
+                row_cloned.pop(k)
+
+        bank_account.agency = Agency()
+        for k, v in Agency.__dict__['__annotations__'].items():
+            key_relation = "agencies.%s" % k
+            if k in row_cloned or key_relation in row_cloned:
+                key_in = k if k in row_cloned else key_relation
+                setattr(bank_account.agency, k, row_cloned[key_in])
+                row_cloned.pop(key_in)
+
+        bank_account.user = User()
+        for k, v in User.__dict__['__annotations__'].items():
+            key_relation = "users.%s" % k
+            if k in row_cloned or key_relation in row_cloned:
+                key_in = k if k in row_cloned else key_relation
+                setattr(bank_account.user, k, row_cloned[key_in])
+                row_cloned.pop(key_in)
+
+        print('bank_account', vars(bank_account))
+        print('agency', vars(bank_account.agency))
+        print('user', vars(bank_account.user))
+        # print(row)
+        # bank_account = BankAccount(name=row['name'])
 
 
 bank_account = BankAccount(
