@@ -9,10 +9,13 @@ class AuthBankAccountConsole:
 
     @staticmethod
     def is_auth():
+        agency_number_typed = input("Digite sua Agência: ")
         account_number_typed = input('Digite sua conta: ')
         password_typed = getpass.getpass('Digite sua senha: ')
 
-        return AuthBankAccount.authenticate(account_number_typed, password_typed)
+        return AuthBankAccount.authenticate(
+            agency_number_typed, account_number_typed, password_typed
+        )
 
 
 class CashMachineConsole:

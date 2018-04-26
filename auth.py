@@ -6,7 +6,7 @@ class AuthBankAccount:
     bank_account_authenticated = None
 
     @staticmethod
-    def authenticate(account_number, password):
+    def authenticate(agency_number, account_number, password):
         bank_account_fr = BankAccountFileReader()
         bank_account = bank_account_fr.get_account(account_number)
         if bank_account and AuthBankAccount.__has_bank_account_valid(bank_account, account_number, password):

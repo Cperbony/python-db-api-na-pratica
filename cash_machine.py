@@ -2,25 +2,6 @@
 # from file import MoneySlipsFileReader, MoneySlipsFileWriter
 from file import BankAccountFileWriter
 
-
-class BankAccount:
-    def __init__(self, account_number, name, password, value, admin):
-        self.account_number = account_number
-        self.name = name
-        self.password = password
-        self.value = value
-        self.admin = admin
-
-    def check_account_number(self, account_number):
-        return account_number == self.account_number
-
-    def check_password(self, password):
-        return password == self.password
-
-    def balance_debit(self, value):
-        self.value -= value
-
-
 class CashMachineInsertMoneyBill:
 
     @staticmethod
