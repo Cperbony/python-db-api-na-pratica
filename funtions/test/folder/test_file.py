@@ -1,1 +1,0 @@
-variavel = 'School of net'

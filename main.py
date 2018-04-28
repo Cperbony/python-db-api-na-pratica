@@ -1,4 +1,4 @@
-from console import CashMachineConsole, AuthBankAccountConsole
+from console.console import AuthBankAccountConsole, CashMachineConsole
 from utils import clear, header
 
 
