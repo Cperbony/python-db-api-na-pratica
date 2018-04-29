@@ -1,5 +1,7 @@
 from typing import Dict
 
+from db.db import GetFieldsAnnotation
+
 
 class BankAccount(GetFieldsAnnotation):
     id: int

@@ -112,3 +112,16 @@ class MoneySlipsDB:
         query = "SELECT * FROM money_slips WHERE cash_machine_id = %s"
         cursor.execute(query, [cash_machine_id])
         return cursor.fetchall()
+
+    @staticmethod
+    def update(cash_machine: CashMachine) -> None:
+        cursor = DB.cursor()
+        query = """
+            UPDATE money_slips SET VALUES = %s
+            WHERE cash_machine_id = %s
+            AND money_bill = %s
+        """
+        money_slips = cash_machine.money_slips
+        params = [[amount, cash_machine.id, money_bill]for money_bill, amount in money_slips.items()]
+        #[ [40, 1, 20], [40, 1, 20], ]
+        cursor.executemany(query, params)

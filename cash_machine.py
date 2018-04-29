@@ -1,8 +1,4 @@
-# dependência circular
-# from file import MoneySlipsFileReader, MoneySlipsFileWriter
-from file import BankAccountFileWriter
-from db.models import CashMachine
-from db.repository import CashMachineDB
+from db.repository import CashMachineDB, MoneySlipsDB
 
 
 class CashMachineInsertMoneyBill:
@@ -11,6 +7,7 @@ class CashMachineInsertMoneyBill:
     def insert_money_bill(money_bill, amount):
         cash_machine = CashMachineDB().get()
         cash_machine.money_slips[money_bill] += amount
+        MoneySlipsDB.update(cash_machine)
         # from file import MoneySlipsFileWriter
         # MoneySlipsFileWriter().write_money_slips(cash_machine.money_slips)
         return cash_machine
