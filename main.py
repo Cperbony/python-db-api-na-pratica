@@ -1,5 +1,8 @@
 from console.console import AuthBankAccountConsole, CashMachineConsole
 from utils import clear, header
+import os
+
+os.environ['CASH_MACHINE_ID'] = "1"
 
 
 def main():

@@ -1,4 +1,4 @@
-from db.repository import CashMachineDB, MoneySlipsDB
+from db.repository import CashMachineDB, MoneySlipsDB, BankAccountDB
 
 
 class CashMachineInsertMoneyBill:
@@ -21,6 +21,7 @@ class CashMachineWithDraw:
         money_slips_user = cash_machine.withdraw(value)
         if money_slips_user:
             CashMachineWithDraw.__balance_debit(bank_account, value)
+            MoneySlipsDB.update(cash_machine)
             # from file import MoneySlipsFileWriter
             # MoneySlipsFileWriter().write_money_slips(cash_machine.money_slips)
         return cash_machine
@@ -28,6 +29,7 @@ class CashMachineWithDraw:
     @staticmethod
     def __balance_debit(bank_account, value):
         bank_account.balance_debit(value)
+        BankAccountDB.update_value(bank_account)
         # BankAccountFileWriter().write_bank_account(bank_account)
 
 # accounts_list = [

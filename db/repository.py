@@ -3,6 +3,7 @@ from typing import Dict, Iterator
 from db.db import DB, Hydrator
 from db.models import BankAccount, Agency, User, CashMachine
 from exceptions import AppException
+import os
 
 
 class BankAccountDB:
@@ -59,6 +60,12 @@ class BankAccountDB:
         # print('user', vars(bank_account
 
     @staticmethod
+    def update_value(bank_account: BankAccount) -> None:
+        cursor = DB.cursor()
+        query = "UPDATE bank_account SET VALUE = %s WHERE id = %s"
+        cursor.execute(query, [bank_account.value, bank_account.id])
+
+    @staticmethod
     def __convert_to_object(row: Dict) -> BankAccount:
         row_cloned = row.copy()
         bank_account = BankAccount()
@@ -79,7 +86,8 @@ class CashMachineDB:
     def get() -> CashMachine:
         cursor = DB.cursor()
         query = "SELECT * FROM cash_machines WHERE id = %s"
-        row_affected = cursor.execute(query, [1])
+        current_cash_machine = os.environ['CASH_MACHINE_ID']
+        row_affected = cursor.execute(query, [current_cash_machine])
         if row_affected != 1:
             raise AppException('Cash Machine not found')
         row = cursor.fetchone()
@@ -122,6 +130,6 @@ class MoneySlipsDB:
             AND money_bill = %s
         """
         money_slips = cash_machine.money_slips
-        params = [[amount, cash_machine.id, money_bill]for money_bill, amount in money_slips.items()]
-        #[ [40, 1, 20], [40, 1, 20], ]
+        params = [[amount, cash_machine.id, money_bill] for money_bill, amount in money_slips.items()]
+        # [ [40, 1, 20], [40, 1, 20], ]
         cursor.executemany(query, params)
